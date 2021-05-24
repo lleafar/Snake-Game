@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: #181818;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BoardController">
-    <GridPane fx:id="gridPane" layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressedHandle" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #202020;">
+    <GridPane fx:id="gridPane" layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressedHandle" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #202020; -fx-border-color: purple;">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,7 +46,22 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
-   <Label fx:id="points" layoutX="240.0" layoutY="4.0" text="Pontos: 99" textAlignment="CENTER" textFill="WHITE">
+   <Label fx:id="points" layoutX="105.0" layoutY="4.0" text="99" textAlignment="CENTER" textFill="WHITE">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Label>
+   <Label fx:id="highscore" layoutX="476.0" layoutY="4.0" text="00" textAlignment="CENTER" textFill="WHITE">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Label>
+   <Label fx:id="points1" layoutX="48.0" layoutY="4.0" text="Pontos:" textAlignment="CENTER" textFill="WHITE">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Label>
+   <Label fx:id="points11" layoutX="372.0" layoutY="4.0" text="Highest Score:" textAlignment="CENTER" textFill="WHITE">
       <font>
          <Font size="15.0" />
       </font>

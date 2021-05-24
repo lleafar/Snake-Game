@@ -29,7 +29,7 @@ public class BoardController implements Initializable {
     private final ImageView imageView = new ImageView(image);
 
     @FXML
-    private Label points;
+    private Label points, highscore;
 
     @FXML
     private GridPane gridPane;
@@ -62,7 +62,7 @@ public class BoardController implements Initializable {
                     gridPane.add(SNAKE_HEAD, board.getSnake().getSnakeBody().get(0).getxPos(), board.getSnake().getSnakeBody().get(0).getyPos());
 
                     //update points
-                    points.setText("Points: " + (board.getSnake().getSnakeBody().size() - 1));
+                    points.setText(String.valueOf(board.getSnake().getSnakeBody().size() - 1));
 
                     //Draw snake tail
                     for (int i = 1; i < board.getSnake().getSnakeBody().size(); i++) {
@@ -72,6 +72,10 @@ public class BoardController implements Initializable {
                     //check collision before continuing
                     if (board.checkCollision()) {
                         timeline.stop();
+                        if (Integer.parseInt(points.getText()) > Integer.parseInt(highscore.getText())){
+                            highscore.setText(points.getText());
+                        }
+
                         Alerts.gameOver(timeline);
                         restart();
                     }
