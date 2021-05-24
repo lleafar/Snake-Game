@@ -5,16 +5,21 @@ public class Board {
     private final Snake snake = new Snake();
     private Fruit fruit = new Fruit(boxSize);
     private char direction = 'D';
+    private char flag;
+
 
     public Board() {
+        generateApple();
     }
 
-    public void setObjectPosition(Object obj, Position pos) {
+    private void setObjectPosition(Object obj, Position pos) {
         if (obj instanceof Snake) {
             snake.getSnakeBody().get(0).setxPos(pos.getxPos());
             snake.getSnakeBody().get(0).setyPos(pos.getyPos());
+            eat();
         } else if (obj instanceof Fruit) {
-            fruit.setFruitPos(pos);
+            for (Position p : snake.getSnakeBody())
+                fruit.setFruitPos(pos);
         }
     }
 
@@ -32,17 +37,12 @@ public class Board {
             snake.getSnakeBody().get(i).setxPos(snake.getSnakeBody().get(i - 1).getxPos());
             snake.getSnakeBody().get(i).setyPos(snake.getSnakeBody().get(i - 1).getyPos());
         }
-
         switch (direction) {
             case 'W':
                 if (snake.getSnakeBody().get(0).getyPos() - 1 < 0) {
                     setObjectPosition(snake, new Position(snake.getSnakeBody().get(0).getxPos(), 15));
                 } else {
                     setObjectPosition(snake, new Position(snake.getSnakeBody().get(0).getxPos(), snake.getSnakeBody().get(0).getyPos() - 1));
-                }
-                if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
-                    snake.grow(snake.getSnakeBody().get(0).getxPos(), snake.getSnakeBody().get(0).getyPos() + snake.getSnakeBody().size() + 1);
-                    generateApple();
                 }
                 break;
             case 'A':
@@ -51,20 +51,12 @@ public class Board {
                 } else {
                     setObjectPosition(snake, new Position(snake.getSnakeBody().get(0).getxPos() - 1, snake.getSnakeBody().get(0).getyPos()));
                 }
-                if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
-                    snake.grow(snake.getSnakeBody().get(0).getxPos() + snake.getSnakeBody().size() + 1, snake.getSnakeBody().get(0).getyPos());
-                    generateApple();
-                }
                 break;
             case 'S':
                 if (snake.getSnakeBody().get(0).getyPos() + 1 > 15) {
                     setObjectPosition(snake, new Position(snake.getSnakeBody().get(0).getxPos(), 0));
                 } else {
                     setObjectPosition(snake, new Position(snake.getSnakeBody().get(0).getxPos(), snake.getSnakeBody().get(0).getyPos() + 1));
-                }
-                if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
-                    snake.grow(snake.getSnakeBody().get(0).getxPos(), snake.getSnakeBody().get(0).getyPos() - snake.getSnakeBody().size() + 1);
-                    generateApple();
                 }
                 break;
             case 'D':
@@ -73,17 +65,18 @@ public class Board {
                 } else {
                     setObjectPosition(snake, new Position(snake.getSnakeBody().get(0).getxPos() + 1, snake.getSnakeBody().get(0).getyPos()));
                 }
-                if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
-                    snake.grow(snake.getSnakeBody().get(0).getxPos() - snake.getSnakeBody().size() + 1, snake.getSnakeBody().get(0).getyPos());
-                    generateApple();
-                }
                 break;
         }
 
+        flag = direction;
     }
 
     public void setDirection(char c) {
         this.direction = c;
+    }
+
+    public char getDirection() {
+        return flag;
     }
 
     public boolean checkCollision() {
@@ -95,8 +88,15 @@ public class Board {
         return false;
     }
 
-    public void generateApple() {
+    private void generateApple() {
         setObjectPosition(fruit, new Position(fruit.getRandomX(), fruit.getRandomY()));
+    }
+
+    private void eat() {
+        if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
+            generateApple();
+            snake.grow(snake.getSnakeBody().get(snake.getSnakeBody().size() - 1).getxPos(), snake.getSnakeBody().get(snake.getSnakeBody().size() - 1).getyPos());
+        }
     }
 
 

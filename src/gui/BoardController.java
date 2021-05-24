@@ -22,9 +22,9 @@ import java.util.ResourceBundle;
 
 public class BoardController implements Initializable {
     private final Circle SNAKE_HEAD = new Circle(50, 50, 15, Color.web("8E09E0"));
-    private final Board board = new Board();
+    private Board board = new Board();
     private Timeline timeline;
-    private final InputStream input = this.getClass().getResourceAsStream("/gui/utils/purpleapple.png");
+    private final InputStream input = this.getClass().getResourceAsStream("/gui/utils/img/purpleapple.png");
     private final Image image = new Image(input, 40, 40, false, true);
     private final ImageView imageView = new ImageView(image);
 
@@ -36,14 +36,13 @@ public class BoardController implements Initializable {
 
     @FXML
     public void onKeyPressedHandle(KeyEvent e) {
-
-        if (e.getCode() == KeyCode.W) {
+        if (e.getCode() == KeyCode.W && board.getDirection() != 'S') {
             board.setDirection('W');
-        } else if (e.getCode() == KeyCode.A) {
+        } else if (e.getCode() == KeyCode.A && board.getDirection() != 'D') {
             board.setDirection('A');
-        } else if (e.getCode() == KeyCode.S) {
+        } else if (e.getCode() == KeyCode.S && board.getDirection() != 'W') {
             board.setDirection('S');
-        } else if (e.getCode() == KeyCode.D) {
+        } else if (e.getCode() == KeyCode.D && board.getDirection() != 'A') {
             board.setDirection('D');
         }
     }
@@ -51,36 +50,41 @@ public class BoardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gridPane.setFocusTraversable(true);
-        board.generateApple();
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.1), e -> {
                     //clean the grid
                     gridPane.getChildren().clear();
 
-                    //update points
-                    points.setText("Points: " + (board.getSnake().getSnakeBody().size() - 1));
+                    gridPane.add(imageView, board.getFruit().getFruitPos().getxPos(), board.getFruit().getFruitPos().getyPos());
 
-                    //check collision before continuing
-                    if (board.checkCollision()) {
-                        timeline.stop();
-                        Alerts.gameOver();
-                    }
                     //update and draw snake
                     board.move();
                     gridPane.add(SNAKE_HEAD, board.getSnake().getSnakeBody().get(0).getxPos(), board.getSnake().getSnakeBody().get(0).getyPos());
+
+                    //update points
+                    points.setText("Points: " + (board.getSnake().getSnakeBody().size() - 1));
 
                     //Draw snake tail
                     for (int i = 1; i < board.getSnake().getSnakeBody().size(); i++) {
                         gridPane.add(new Circle(50, 50, 13, Color.web("4205B6")), board.getSnake().getSnakeBody().get(i).getxPos(), board.getSnake().getSnakeBody().get(i).getyPos());
                     }
-                    gridPane.add(imageView, board.getFruit().getFruitPos().getxPos(), board.getFruit().getFruitPos().getyPos());
+
+                    //check collision before continuing
+                    if (board.checkCollision()) {
+                        timeline.stop();
+                        Alerts.gameOver(timeline);
+                        restart();
+                    }
                 })
         );
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
+    }
 
+    private void restart() {
+        board = new Board();
     }
 
 }
