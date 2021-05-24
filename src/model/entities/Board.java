@@ -32,7 +32,6 @@ public class Board {
     }
 
     public void move() {
-
         for (int i = snake.getSnakeBody().size() - 1; i > 0; i--) {
             snake.getSnakeBody().get(i).setxPos(snake.getSnakeBody().get(i - 1).getxPos());
             snake.getSnakeBody().get(i).setyPos(snake.getSnakeBody().get(i - 1).getyPos());
@@ -68,7 +67,15 @@ public class Board {
                 break;
         }
 
+<<<<<<< HEAD
         flag = direction;
+=======
+        if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
+            snake.grow(snake.getSnakeBody().get(0).getxPos() - snake.getSnakeBody().size() + 1, snake.getSnakeBody().get(0).getyPos());
+            generateApple();
+        }
+
+>>>>>>> b849f51ad26bfb2692ec6731fb08aa9ece52dbe8
     }
 
     public void setDirection(char c) {
@@ -92,6 +99,7 @@ public class Board {
         setObjectPosition(fruit, new Position(fruit.getRandomX(), fruit.getRandomY()));
     }
 
+<<<<<<< HEAD
     private void eat() {
         if (snake.getSnakeBody().get(0).getxPos().equals(fruit.getFruitPos().getxPos()) && snake.getSnakeBody().get(0).getyPos().equals(fruit.getFruitPos().getyPos())) {
             generateApple();
@@ -100,4 +108,6 @@ public class Board {
     }
 
 
+=======
+>>>>>>> b849f51ad26bfb2692ec6731fb08aa9ece52dbe8
 }
